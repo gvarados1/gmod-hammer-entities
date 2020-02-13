@@ -1,0 +1,112 @@
+//-------------------------------------------------------------------------
+//
+// Gvarados's gmod bonus fgd
+// Updated 11/6/19
+//
+//-------------------------------------------------------------------------
+
+
+// A Boojum Snark's Cubemap - adding size doesn't work? How does he do it?
+@PointClass color(0 0 255) size(-1 -1 -64, 1 1 -8) sidelist(sides) iconsprite("editor/env_cubemap.vmt") = env_cubemap : 
+	"An entity that creates a sample point for the Cubic Environment Map."
+[
+	cubemapsize(choices) : "Cubemap Size" : 0 =
+	[
+		0 : "Default"
+		1 : "1x1"
+		2 : "2x2"
+		3 : "4x4"
+		4 : "8x8"
+		5 : "16x16"
+		6 : "32x32"
+		7 : "64x64"
+		8 : "128x128"
+		9 : "256x256"
+	]
+	sides(sidelist) : "Brush faces": : "(Optional) Brushes faces to directly attach to the env_cubemap. Press Pick then click on faces in the 3D View to select them. Use CTRL while clicking to add or remove from the selection."
+]
+
+// filter_vehicle
+@FilterClass base(BaseFilter) iconsprite("editor/filter_class.vmt") = filter_vehicle :
+	"A filter that filters only vehicles."
+[
+]
+
+// filter_lua
+@FilterClass base(BaseFilter) iconsprite("editor/filter_class.vmt") = filter_lua :
+	"A filter that filters by lua code."
+[
+	code(string) : "Code" : : "Enter lua code to make custom filter. "+
+		"Parameters:(trigger, ent)"+
+		"Use return true to pass the filter (return false is not required.)"
+]
+
+// env_wave_controller
+@PointClass base(Targetname) = env_wave_controller : 
+	"Controls waves."
+[
+	wave_length(float) : "Wave Length" : "1024" : "Length of individual wave segments. All segments must be the same length!"
+	spawner_small(target_destination)  : "Wave 1" : : "The name of the env_entity_maker."
+	spawner_med(target_destination)  : "Wave 2" : : "The name of the env_entity_maker."
+	spawner_large(target_destination)  : "Wave 3" : : "The name of the env_entity_maker."
+	spawner_mega(target_destination)  : "Wave 4" : : "The name of the env_entity_maker."
+	water_defaultspawn(choices) : "Default spawn method" : 0 : "Set default method for wave spawning" =
+	[
+		0 : "Random"
+		1 : "Wave 1 only"
+		2 : "Wave 2 only"
+		3 : "Wave 3 only"
+		4 : "Wave 4 only"
+	]
+
+	water_overlayenable(choices) : "Underwater Overlay Fix" : 1  =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	water_fogenable(choices) : "Underwater Fog Fix" : 1 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	water_fogcolor(color255) : "Fog Color" : "24 64 62"
+	water_fogstart(float) : "Fog Start" : "0"
+	water_fogend(float) : "Fog End" : "2000"
+	water_fogmaxdensity(float) : "Fog Max Density [0..1]" : "1"
+	
+	// Inputs
+	input SetWaveType(integer) : "Changes waves_spawntype"
+	input SetWaveSpeed(integer) : "Changes waves_movespeed"
+	input SetLagComp(float) : "Changes waves_lagcomp"
+]
+
+// player_phys_controller
+@PointClass base(Targetname) = player_phys_controller : 
+	"water phyiscs and jump fix."
+[
+
+]
+
+//fog_volume_simple
+@SolidClass base(Targetname) = fog_volume_simple : 
+	"An entity that controls the fog and view distance in it's volume."
+[
+	// Inputs
+	input Enable(void) : "Turn the fog on."
+	input Disable(void) : "Turn the fog off."
+
+	// Starting fog parameters for the level. These are selectable per LOD.	
+	isdisabled(choices) : "Start Disabled" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	fogcolor(color255) : "Fog Color" : "255 255 255"
+	fogstart(string) : "Fog Start" : "500.0"
+	fogend(string) : "Fog End" : "2000.0"
+	fogmaxdensity(float) : "Fog Max Density [0..1]" : "1"
+	
+	foglerptime(float) : "Interpolate time" : "0"
+	
+	farz(string) : "Far Z Clip Plane" : "-1"
+]
